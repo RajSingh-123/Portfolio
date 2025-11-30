@@ -1,0 +1,108 @@
+[
+  {
+    "id": 1,
+    "question": "Are you open to relocation?",
+    "answer": "Yes, absolutely! I'm actively seeking entry-level opportunities in Data Analytics, Business Intelligence, and Reporting across India and the UAE. I'm ready to relocate immediately and eager to bring my problem-solving skills to a forward-thinking team."
+  },
+  {
+    "id": 2,
+    "question": "What are your notice period and salary expectations?",
+    "answer": "My notice period is 30 days from the date of offer acceptance. Regarding salary, I'm flexible and open to discussion based on the role, company, and location. For roles in India, I'm looking at competitive market rates for entry-level data analysts (₹4-6 LPA range), and for UAE positions, I'm open to discussing AED equivalents. Let's talk numbers that work for both of us!"
+  },
+  {
+    "id": 3,
+    "question": "Can I see sample code?",
+    "answer": "Absolutely! You can find my code samples on GitHub at github.com/RajSingh-123. My portfolio also includes detailed case studies with SQL queries, DAX formulas, and Python code snippets. Each project demonstrates my technical approach and problem-solving methodology. Feel free to explore the code and reach out if you have questions about any specific implementation."
+  },
+  {
+    "id": 4,
+    "question": "What are your core technical skills?",
+    "answer": "My core tech stack includes: SQL (MySQL, PostgreSQL), Power BI, Python (Pandas, NumPy), DAX, Excel with Power Query, and basic AWS (S3, Redshift). I'm also familiar with Tableau, Jupyter, and Git/GitHub. I have hands-on experience with data modeling, ETL workflows, exploratory data analysis (EDA), and KPI tracking."
+  },
+  {
+    "id": 5,
+    "question": "What experience do you have with real-world projects?",
+    "answer": "I've completed 5 major projects showcasing real-world applications: HR Attrition Analysis (35% efficiency improvement), Netflix Viewing Behavior Analytics (20% recommendation accuracy boost), Adidas Sales Analysis (15% forecast accuracy), Online Course Engagement Dashboard, and E-commerce Customer Segmentation (RFM Analysis). Each project demonstrates STAR methodology with quantified business impact."
+  },
+  {
+    "id": 6,
+    "question": "Do you have a degree in Computer Science?",
+    "answer": "Yes, I have a background in Computer Science. Combined with my hands-on experience in data analytics and technical certifications, this gives me a strong foundation in both theoretical concepts and practical implementation of data solutions."
+  },
+  {
+    "id": 7,
+    "question": "What's your approach to learning new tools and technologies?",
+    "answer": "I'm a self-starter who loves continuous learning. I stay updated with industry trends through online courses, documentation, and hands-on projects. When facing new tools, I follow a structured approach: understand the core concepts, build small projects, and apply them to real-world problems. This mindset has helped me master Power BI, Python, and SQL effectively."
+  },
+  {
+    "id": 8,
+    "question": "How do you handle tight deadlines?",
+    "answer": "I thrive under pressure! My approach involves: breaking down tasks into manageable chunks, prioritizing high-impact deliverables first, automating repetitive work using SQL and Python, and maintaining clear communication with stakeholders. In my HR Analytics project, I delivered a comprehensive dashboard in 6 weeks, balancing quality with speed."
+  },
+  {
+    "id": 9,
+    "question": "What's your ideal work environment?",
+    "answer": "I thrive in collaborative environments where I can combine deep technical analysis with clear communication. I love working with cross-functional teams, receiving constructive feedback, and having opportunities to grow. An organization that values data-driven decision making and invests in employee development is ideal for me."
+  },
+  {
+    "id": 10,
+    "question": "What are your career goals?",
+    "answer": "My short-term goal is to land a challenging entry-level Data Analyst role where I can contribute meaningfully while learning from experienced professionals. Long-term, I aim to become a Senior Data Analyst or transition into Business Intelligence, leading analytics initiatives that drive strategic business decisions. I'm committed to continuous skill development and staying at the forefront of analytics trends."
+  },
+  {
+    "id": 11,
+    "question": "Are you open to remote work or do you prefer on-site?",
+    "answer": "I'm flexible! I'm open to fully remote, hybrid, or on-site arrangements depending on the role and company culture. Remote work allows me to maintain focus on complex analysis, while on-site collaboration helps with team alignment and knowledge sharing. I can adapt to whatever works best for your organization and the nature of the role."
+  },
+  {
+    "id": 12,
+    "question": "How do you communicate complex data insights to non-technical stakeholders?",
+    "answer": "I believe strong data storytelling is crucial. My approach includes: using visualizations and dashboards to highlight key patterns, avoiding technical jargon and explaining in business terms, focusing on actionable recommendations rather than raw data, and tailoring communication to the audience's level of expertise. In my projects, I've successfully presented insights to C-level executives, resulting in strategic decisions based on data."
+  },
+  {
+    "id": 13,
+    "question": "What's your experience with cross-functional team collaboration?",
+    "answer": "I've worked extensively with cross-functional teams including HR, Sales, and Engineering teams on various analytics projects. I understand the importance of clear communication, respecting different perspectives, and aligning analytics work with business goals. I'm comfortable presenting findings to stakeholders from different departments and incorporating their feedback into analysis."
+  },
+  {
+    "id": 14,
+    "question": "Do you have any professional certifications?",
+    "answer": "I have professional certifications in Data Analytics and SQL. I've also completed specialized courses in Power BI, Python for Data Analysis, and Excel Advanced. I'm continuously learning and planning to pursue Microsoft Data Analytics and Google Analytics certifications. My certifications complement my hands-on project experience and demonstrate my commitment to professional development."
+  },
+  {
+    "id": 15,
+    "question": "Have you worked with large datasets? How did you handle performance optimization?",
+    "answer": "Yes, in my projects I've worked with datasets ranging from 50K to 100M+ records. For performance optimization, I use efficient SQL query writing with proper indexing, minimize data redundancy through normalization, and optimize dashboards by using aggregations and filters. In my Netflix project, I handled 5000+ viewing records efficiently. For larger datasets, I'm familiar with basic AWS tools like Redshift and S3."
+  },
+  {
+    "id": 16,
+    "question": "How do you stay updated with industry trends and best practices?",
+    "answer": "I stay current through multiple channels: following industry blogs and publications like Medium and Towards Data Science, attending webinars and online communities, participating in data analytics forums on GitHub and Stack Overflow, and continuously working on personal projects that challenge me with new tools and methodologies. I dedicate time weekly to learning new techniques and industry best practices."
+  },
+  {
+    "id": 17,
+    "question": "Can you work with data warehouses or specific BI platforms?",
+    "answer": "I have hands-on experience with Power BI and am familiar with Tableau, Looker, and basic data warehousing concepts. I've worked with databases including MySQL and PostgreSQL. I quickly pick up new platforms and tools through documentation and hands-on practice. While Power BI is my strongest platform, my foundational understanding of data structures and ETL processes transfers well to other BI tools and data warehouses."
+  },
+  {
+    "id": 18,
+    "question": "What's the biggest challenge you've faced in a data project and how did you solve it?",
+    "answer": "In my HR Analytics project, the biggest challenge was dealing with incomplete attrition data spread across multiple sources with inconsistent formats. I solved this by: identifying data quality issues early, creating a data cleaning workflow using Python and SQL, validating data against business rules, and documenting the cleaning process. This ensured data integrity and taught me the importance of thorough data exploration before analysis."
+  },
+  {
+    "id": 19,
+    "question": "How long does it typically take you to complete an analytics project?",
+    "answer": "Project timelines vary based on scope and complexity. Typically: Small dashboards or analyses take 1-2 weeks, medium projects take 3-6 weeks (like my HR Dashboard which took 6 weeks), and comprehensive projects can take 8-12 weeks. I focus on breaking projects into milestones, maintaining clear communication with stakeholders about progress, and balancing speed with quality. I'm comfortable adjusting timelines based on business priorities."
+  },
+  {
+    "id": 20,
+    "question": "What's your approach to testing and validating data analysis?",
+    "answer": "I follow a rigorous validation approach: cross-verifying results with raw data and multiple query methods, comparing outputs against business expectations and historical trends, peer review with colleagues when available, and documenting assumptions and methodologies. In my Adidas Sales project, I validated forecasts against actual results and achieved 85% accuracy. I believe testing and validation prevent costly mistakes and build stakeholder trust."
+  },
+  {
+  "id": 21,
+  "question": "What are your salary expectations?",
+  "answer": "I'm flexible and open to discussion. For India, I generally look for ₹4–6 LPA for entry-level data roles. For UAE, I consider AED 6,000–8,000 depending on responsibilities and benefits."
+}
+
+]

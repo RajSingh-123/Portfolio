@@ -1,0 +1,55 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+server/public/dist/
+build/
+out/
+.replit
+
+# Environment variables
+.env
+.env.*          # covers .env.local, .env.development, etc.
+!.env.example   # keep example file in repo
+API_KEYS_GUIDE.md
+
+# macOS
+.DS_Store
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# System files
+Thumbs.db
+
+# Local IDE settings
+.vscode/
+.idea/
+
+# Vite cache
+.vite/
+vite.config.ts.*
+
+# Temp files
+*.tar.gz
+*.zip
+*.tmp
+
+# Server uploads/public
+server/public/uploads/
+server/public/temp/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional: Ignore PM2 logs
+.pm2/
+
+# Optional: ignore coverage
+coverage/

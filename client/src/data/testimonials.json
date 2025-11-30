@@ -1,0 +1,35 @@
+[
+  {
+    "id": "testimonial-001",
+    "name": "Sarah Mitchell",
+    "role": "HR Manager",
+    "company": "TechCorp India",
+    "image": "https://i.pravatar.cc/150?img=1",
+    "rating": 5,
+    "verified": true,
+    "date": "2024-10-15",
+    "text": "Raj delivered our HR analytics dashboard in 6 weeks that tracked 2,400+ employee records. His attrition analysis using Python clustering identified that high performers in the Engineering dept had 3.2x turnover vs other departments—a critical insight we'd completely missed. He built Power BI dashboards with dynamic DAX measures that auto-updated monthly reports, reducing manual reporting time from 16 hours to 2 hours. The CEO presented his findings directly to the board, and we've since implemented retention programs based on his segmentation. Technical excellence + business acumen."
+  },
+  {
+    "id": "testimonial-002",
+    "name": "Ahmed Hassan",
+    "role": "Senior Data Analyst",
+    "company": "Analytics Hub Dubai",
+    "image": "https://i.pravatar.cc/150?img=2",
+    "rating": 5,
+    "verified": true,
+    "date": "2024-09-22",
+    "text": "Raj's RFM analysis on 50K+ customer transactions identified 12% high-value customers generating 67% of revenue—data we needed to see but weren't capturing. He built K-means clustering in Python with validation metrics, then created an interactive Tableau dashboard letting our marketing team segment customers by value tiers. His methodology documentation was so thorough that our team now uses his approach as the template for all future projects. Rare combination of rigor and practical delivery. He's the kind of analyst who raises team capability."
+  },
+  {
+    "id": "testimonial-003",
+    "name": "Priya Kapoor",
+    "role": "VP Product",
+    "company": "StreamMedia Solutions",
+    "image": "https://i.pravatar.cc/150?img=3",
+    "rating": 5,
+    "verified": true,
+    "date": "2024-08-30",
+    "text": "Raj analyzed 500K+ viewing sessions across 8 months and delivered insights that changed our content strategy. He discovered Crime documentaries had 85% completion vs Action films at 42%—leading us to greenlight 3 new true crime series that brought in $2.1M incremental revenue. He built an interactive Power BI dashboard with advanced filtering that our 40+ team members still use daily to explore viewer behavior by genre, time slot, and demographics. Most importantly, his findings were 100% validated when actual content performance matched his projections. That's the mark of real analytical excellence."
+  }
+]

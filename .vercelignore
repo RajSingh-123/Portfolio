@@ -1,0 +1,9 @@
+server/
+.local/
+.replit
+.vscode/
+node_modules/
+API_KEYS_GUIDE.md
+*.log
+*.sql
+attached_assets/large-videos/

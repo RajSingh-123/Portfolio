@@ -1,0 +1,133 @@
+[
+  {
+    "id": "sql-queries-junior-analyst",
+    "title": "10 SQL Queries Every Junior Data Analyst Should Know (Interview Edition)",
+    "author": "Raj Singh",
+    "date": "2024-11-15",
+    "readTime": "10 min read",
+    "category": "SQL",
+    "excerpt": "Master essential SQL queries that frequently appear in data analyst interviews — window functions, CTEs, aggregations, joins and practical examples.",
+    "tldr": "A concise collection of 10 practical SQL queries (with scenarios) that will prepare a junior analyst for technical interviews and real-world problems.",
+    "content": "## Why These Queries Matter\n\nThis post collects 10 essential SQL patterns that I found most useful during interviews and real projects. It focuses on logic and explanation so you can adapt these patterns to many datasets.\n\n### Query 1 — Basic Aggregation with GROUP BY\n**Scenario:** Find total sales by product category.\n```sql\nSELECT category,\n       COUNT(*) AS transaction_count,\n       SUM(amount) AS total_sales,\n       AVG(amount) AS avg_transaction\nFROM sales\nGROUP BY category\nORDER BY total_sales DESC;\n```\n\n### Query 2 — HAVING with Aggregates\n**Scenario:** Categories with sales greater than a threshold.\n```sql\nSELECT category, SUM(amount) AS total_sales\nFROM sales\nGROUP BY category\nHAVING SUM(amount) > 100000\nORDER BY total_sales DESC;\n```\n\n### Query 3 — JOINs (INNER & LEFT)\n**Scenario:** Combine customers and their orders.\n```sql\nSELECT c.customer_id, c.customer_name, COUNT(o.order_id) AS total_orders, SUM(o.amount) AS lifetime_value\nFROM customers c\nLEFT JOIN orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id, c.customer_name\nORDER BY lifetime_value DESC;\n```\n\n### Query 4 — Window Functions (ROW_NUMBER)\n**Scenario:** Rank employees by salary within a department.\n```sql\nSELECT employee_id, employee_name, department, salary,\n       ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS salary_rank\nFROM employees;\n```\n\n### Query 5 — Running Total with SUM() OVER\n**Scenario:** Cumulative revenue by month.\n```sql\nSELECT DATE_TRUNC('month', order_date) AS month,\n       SUM(amount) AS monthly_revenue,\n       SUM(SUM(amount)) OVER (ORDER BY DATE_TRUNC('month', order_date)) AS cumulative_revenue\nFROM orders\nGROUP BY DATE_TRUNC('month', order_date)\nORDER BY month;\n```\n\n### Query 6 — CTE for Readability\n**Scenario:** Customers with above-average spending.\n```sql\nWITH customer_spending AS (\n  SELECT customer_id, SUM(amount) AS total_spent\n  FROM orders\n  GROUP BY customer_id\n)\nSELECT cs.customer_id, cs.total_spent\nFROM customer_spending cs\nWHERE cs.total_spent > (SELECT AVG(total_spent) FROM customer_spending)\nORDER BY cs.total_spent DESC;\n```\n\n### Query 7 — CASE for Segmentation\n**Scenario:** Segment customers by spend.\n```sql\nSELECT customer_id, SUM(amount) AS total_spent,\n       CASE WHEN SUM(amount) > 5000 THEN 'Premium'\n            WHEN SUM(amount) BETWEEN 1000 AND 5000 THEN 'Regular'\n            ELSE 'Casual' END AS customer_segment\nFROM orders\nGROUP BY customer_id\nORDER BY total_spent DESC;\n```\n\n### Query 8 — Date Filters (Last N days)\n**Scenario:** Daily sales for the past 30 days.\n```sql\nSELECT CAST(order_date AS DATE) AS order_day,\n       COUNT(*) AS daily_orders,\n       SUM(amount) AS daily_revenue\nFROM orders\nWHERE order_date >= CURRENT_DATE - INTERVAL '30 days'\nGROUP BY CAST(order_date AS DATE)\nORDER BY order_day DESC;\n```\n\n### Query 9 — Subquery Example\n**Scenario:** Products never ordered.\n```sql\nSELECT product_id, product_name, category\nFROM products\nWHERE product_id NOT IN (SELECT DISTINCT product_id FROM orders)\nORDER BY category;\n```\n\n### Query 10 — Self-Join\n**Scenario:** Employees earning more than their manager.\n```sql\nSELECT emp.employee_id, emp.employee_name, emp.salary AS employee_salary,\n       mgr.employee_name AS manager_name, mgr.salary AS manager_salary\nFROM employees emp\nINNER JOIN employees mgr ON emp.manager_id = mgr.employee_id\nWHERE emp.salary > mgr.salary;\n```\n\n## Interview Tips\n1. Read the prompt and clarify assumptions.\n2. Start with a correct simple query, then optimize.\n3. Explain edge cases and test logic with sample rows.\n4. Use CTEs for readability in complex solutions.\n\n## Conclusion\nPractice these patterns on sample datasets — the goal is to learn the reasoning, not memorize syntax."
+  },
+
+  {
+    "id": "hr-attrition-power-bi",
+    "title": "How I Built an HR Attrition Dashboard with Power BI (Practical Walkthrough)",
+    "author": "Raj Singh",
+    "date": "2024-11-20",
+    "readTime": "7 min read",
+    "category": "Power BI",
+    "excerpt": "Step-by-step process to build a Power BI HR attrition dashboard focused on analysis, DAX measures, and practical model choices — no inflated numbers, just real techniques.",
+    "tldr": "Built a Power BI HR dashboard using SQL-extracted tables and a simple star schema. Focused on measures for attrition rate, tenure cohorts, and drivers analysis to help HR teams explore patterns.",
+    "content": "## Project Goal\n\nCreate a concise Power BI report that helps HR understand attrition patterns and explore drivers such as tenure, job role, and work-life balance.\n\n## Data & Tools\n- Source: CSV exports / basic HR tables (Employee, Role, Department, Compensation)\n- Tools: Power BI Desktop (Power Query + DAX), basic SQL for extraction\n\n## Key Steps\n1. **Data Extraction:** Exported relevant tables from CSV/SQL and loaded into Power BI. Kept raw tables separate and avoided over-transformation at load time.\n\n2. **Modeling:** Built a simple star-like model: a fact table for employee snapshots and dimension tables for Role, Department, and Date.\n\n3. **Important DAX Measures**\n- **Attrition Rate**\n```dax\nAttrition Rate (%) =\nDIVIDE(\n  CALCULATE(COUNT('Employees'[EmployeeID]), 'Employees'[Attrition] = \"Yes\"),\n  COUNT('Employees'[EmployeeID]),\n  0\n) * 100\n```\n- **At-Risk Count (example rule)**\n```dax\nAtRiskCount =\nCALCULATE(\n  COUNT('Employees'[EmployeeID]),\n  'Employees'[SatisfactionScore] <= 2,\n  'Employees'[WorkLifeBalance] <= 2,\n  'Employees'[Attrition] = \"No\"\n)\n```\n\n4. **Visuals & Pages**\n- Overview: KPIs + monthly trend + department breakdown\n- Demographics: Age cohorts, tenure\n- Drivers: Correlation-like visuals (satisfaction vs attrition)\n\n5. **Actionability**\n- Allow HR to filter by department, tenure band, and role.\n- Provide exportable lists for at-risk employees (for further HR investigation).\n\n## What I focused on (no fake claims)\n- Reproducible DAX measures and clear model design.\n- Explainable filters and drill-throughs.\n- Performance: avoid too many calculated columns and reduce model size.\n\n## What I learned\n- Keep data lineage clear — document every transform.\n- DAX measures are preferable for flexible KPIs.\n- Dashboards should enable investigation, not just static numbers."
+  },
+
+  {
+    "id": "netflix-data-cleaning-practices",
+    "title": "End-to-End Data Cleaning for a Netflix Dataset — Practical Techniques",
+    "author": "Raj Singh",
+    "date": "2024-11-18",
+    "readTime": "8 min read",
+    "category": "Data Cleaning",
+    "excerpt": "Practical data cleaning steps I use on public datasets (dates, genres, duplicates). Focused on reproducible code and validation — no inflated metrics.",
+    "tldr": "Walkthrough of cleaning steps for a Netflix-style dataset: identifying missing values, standardizing dates, deduplication, mapping genres, and validation checks.",
+    "content": "## Why cleaning matters\n\nClean data is the base of any reliable analysis. This post describes repeatable steps I follow when preparing streaming-content datasets.\n\n## Steps I Follow\n1. **Initial inspection** — `df.info()`, `df.describe()`, `df.isnull().sum()` to understand missingness.\n2. **Standardize date fields** — `pd.to_datetime(..., errors='coerce')` and remove rows where date parsing fails if they are not recoverable.\n3. **Deduplicate** — drop duplicates using sensible subset keys (e.g., `user`, `title`, `date`).\n4. **Normalize categorical data** — strip whitespace, lower-case, and map variants (e.g., `sci-fi` → `science-fiction`).\n5. **Fix numeric issues** — remove negative durations, cap unrealistic values.\n6. **Document transforms** — keep a changelog or notebook cells explaining each transformation.\n\n## Example snippets (pandas)\n```python\nimport pandas as pd\ndf = pd.read_csv('netflix.csv')\ndf['watch_date'] = pd.to_datetime(df['watch_date'], errors='coerce')\ndf = df[df['watch_date'].notna()]\ndf['genre'] = df['genre'].fillna('unknown').str.strip().str.lower()\ndf = df.drop_duplicates(subset=['user_id', 'title', 'watch_date'])\n```\n\n## Validation\n- Row counts before/after each step\n- A small sampling of rows to verify changes\n- Data quality score (optional): fraction of non-null cells\n\n## Takeaway\nFocus on reproducible, documented cleaning steps. Clean data leads to defensible insights."
+  },
+
+  {
+    "id": "netflix-dashboard-powerbi",
+    "title": "How I Analyzed Netflix Viewing Patterns Using Power BI",
+    "author": "Raj Singh",
+    "date": "2024-11-20",
+    "readTime": "7 min read",
+    "category": "Power BI",
+    "excerpt": "A practical walkthrough of turning the Netflix dataset into an interactive Power BI dashboard — data cleaning, modeling, visuals and key observations.",
+    "tldr": "Built a Power BI dashboard covering genre distribution, content type trends, country contribution, and time-based patterns using cleaned public data.",
+    "content": "## Project Overview\n\nUsing a public Netflix dataset, I built an interactive dashboard to answer practical questions: which content types are increasing, which genres dominate, and how content distribution changes over years.\n\n## Approach\n1. Clean dataset (see cleaning post) — normalize genres and parse release years.\n2. Model: keep a compact fact table and small dimensions for performance.\n3. Visuals: KPIs, stacked bars for genre, line for trend over years, and slicers for type/country.\n\n## Insights (example, derived from cleaned data)\n- TV shows showed notable growth in recent years.\n- Drama and international categories were common in the dataset used.\n\n## What I learned\n- Public datasets require careful normalization.\n- Design for quick filtering and clear story flow in the report."
+  },
+
+  {
+    "id": "adidas-sales-eda",
+    "title": "Exploring Adidas Shoe Sales Data — An EDA Walkthrough",
+    "author": "Raj Singh",
+    "date": "2024-11-25",
+    "readTime": "6 min read",
+    "category": "Python",
+    "excerpt": "A straightforward exploratory data analysis of sales data to identify product performance, retailer trends, and discount effects using pandas and matplotlib.",
+    "tldr": "Performed EDA on a retail-style dataset to explore sales by product, retailer, and month; highlighted how discounts and seasonality affect units sold.",
+    "content": "## Outline\n\n1. Data cleaning: parse dates, normalize price fields, handle missing values.\n2. Aggregations: sales by product, by retailer, by month.\n3. Visuals: bar charts for top products, line charts for monthly revenue, scatter for discount vs units.\n\n## Example code (pandas)\n```python\nimport pandas as pd\ndf = pd.read_csv('adidas_sales.csv')\ndf['date'] = pd.to_datetime(df['date'])\nsales_by_product = df.groupby('product_name').agg({'units_sold':'sum','total_sales':'sum'}).reset_index()\n```\n\n## Insights & learning\n- Look for outliers and confirm whether they are data issues or true spikes.\n- Visuals should answer specific business questions (what to reorder, when to discount)."
+  },
+
+  {
+    "id": "online-class-dashboard",
+    "title": "Analyzing Online Class Performance Using Power BI",
+    "author": "Raj Singh",
+    "date": "2024-11-27",
+    "readTime": "6 min read",
+    "category": "Power BI",
+    "excerpt": "Multi-page Power BI report analyzing student scores, attendance, and subject-wise performance with practical guidance for teachers or admins.",
+    "tldr": "Built a multi-page report to track student performance, attendance correlations, and subject areas needing focus; includes student-level drill-throughs and KPIs.",
+    "content": "## Project Goal\n\nHelp educators identify students who need support and subjects with lower average scores.\n\n## Approach\n- Clean grade values and attendance fields.\n- Create metrics: average score, pass rate, attendance bands.\n- Pages: Overview, Attendance, Subject Breakdown, Student Insights.\n\n## Key observations\n- Lower attendance bands typically had lower average scores in the dataset used.\n- Subject variance indicates where targeted interventions may help.\n\n## Learning\nDesign reports with clear navigation and exportable student lists for follow-up."
+  },
+
+  {
+    "id": "sql-mistakes-and-fixes",
+    "title": "10 SQL Mistakes I Made (And How I Fixed Them)",
+    "author": "Raj Singh",
+    "date": "2024-12-01",
+    "readTime": "4 min read",
+    "category": "SQL",
+    "excerpt": "A candid list of beginner SQL mistakes and pragmatic ways to avoid them — great for learners and juniors preparing for interviews.",
+    "tldr": "Common beginner SQL pitfalls (SELECT *, join mistakes, missing conditions, ignoring indexes) and practical fixes that improved my queries.",
+    "content": "## Top Mistakes & Fixes\n\n1. **Using `SELECT *` everywhere** — pick needed columns to reduce payload and clarify intent.\n2. **Forgetting JOIN conditions** — always verify join keys to avoid Cartesian results.\n3. **Confusing JOIN types** — test with small data to see how LEFT vs INNER behaves.\n4. **Not using CTEs for complex logic** — CTEs improve readability and debugging.\n5. **Ignoring indexes in big tables** — learn which columns benefit from indexing.\n6. **Relying on client-side aggregation** — aggregate in SQL where possible.\n7. **Not handling NULLs explicitly** — use COALESCE or IS NULL checks.\n8. **Overusing subqueries** — sometimes window functions or joins are faster.\n9. **Not testing assumptions** — always run quick counts to validate logic.\n10. **Not commenting complex queries** — small comments help future you and reviewers.\n\n## Takeaway\nWrite clear, testable queries and explain assumptions when sharing code."
+  },
+
+  {
+    "id": "data-cleaning-framework",
+    "title": "My Go-To Framework for Cleaning Messy Data",
+    "author": "Raj Singh",
+    "date": "2024-12-03",
+    "readTime": "5 min read",
+    "category": "Data Cleaning",
+    "excerpt": "A repeatable 7-step checklist to turn raw data into analysis-ready datasets using Excel, Power Query, or pandas.",
+    "tldr": "A 7-step, tool-agnostic framework: understand data, handle missing values, standardize formats, fix types, remove duplicates, detect outliers, validate results.",
+    "content": "## 7-Step Framework\n1. **Understand** the dataset and its columns.\n2. **Identify** missing values and choose a strategy.\n3. **Standardize** formats (dates, text casing).\n4. **Fix** incorrect data types.\n5. **Remove** duplicates carefully.\n6. **Detect** and investigate outliers.\n7. **Validate** using checks and small samples.\n\n## Tools\n- Excel / Power Query for quick fixes\n- Python (pandas) for reproducible pipelines\n- Power BI when preparing dashboards\n\n## Final note\nAlways log each transform and keep a reproducible script or notebook."
+  },
+
+  {
+    "id": "powerbi-best-practices",
+    "title": "Power BI Best Practices I Wish I Knew Earlier",
+    "author": "Raj Singh",
+    "date": "2024-12-05",
+    "readTime": "4 min read",
+    "category": "Power BI",
+    "excerpt": "Design and performance tips for Power BI beginners to build cleaner, faster reports.",
+    "tldr": "Practical tips: reduce visual clutter, use DAX measures, prefer slicers sparingly, and optimize model size for performance.",
+    "content": "## Practical Tips\n- **Reduce visuals:** Limit to what answers the question.\n- **Consistent colors & fonts:** Improves readability.\n- **Prefer measures:** DAX measures are often better than calculated columns for performance.\n- **Limit slicers:** Too many slicers confuse users.\n- **Optimize model:** Remove unused columns and reduce granularity where possible.\n\n## UX\nUse bookmarks for guided navigation and keep export options for stakeholders."
+  },
+
+  {
+    "id": "skills-roadmap-analyst",
+    "title": "Skills I Learned to Become a Job-Ready Data Analyst",
+    "author": "Raj Singh",
+    "date": "2024-12-08",
+    "readTime": "5 min read",
+    "category": "Career",
+    "excerpt": "A practical learning path and the exact skills I focused on to prepare for analyst roles — prioritized by hireability.",
+    "tldr": "Recommended learning order: SQL → Excel → Power BI → Statistics → Python (optional) → Projects → Portfolio & Resume.",
+    "content": "## My Skill Path\n1. **SQL** — core for data extraction and joins.\n2. **Excel** — quick analysis and cleaning.\n3. **Power BI** — visualization and DAX basics.\n4. **Statistics** — summary stats and basic inference.\n5. **Python** — helpful for EDA and automation.\n6. **Projects** — apply skills to real datasets.\n7. **Portfolio & Resume** — show results, not claims.\n\n## Advice\nFocus on a few skills deeply and demonstrate them through projects."
+  },
+
+  {
+    "id": "ai-for-analysts-practical",
+    "title": "How I Use AI Tools in My Data Analysis Workflow",
+    "author": "Raj Singh",
+    "date": "2024-12-10",
+    "readTime": "4 min read",
+    "category": "AI",
+    "excerpt": "Practical, non-hype ways I use AI tools as an analyst: debugging, formula generation, and productivity improvements.",
+    "tldr": "AI amplifies productivity: SQL debugging, DAX suggestions, generating documentation, creating sample data — but it doesn't replace understanding.",
+    "content": "## Real Use Cases\n- Debugging SQL errors quickly with contextual prompts.\n- Getting DAX formula ideas and then validating them.\n- Generating small sample datasets for testing analysis flows.\n- Drafting documentation and README content.\n\n## Caution\nAlways validate AI suggestions and understand the logic before using them in production."
+  }
+]

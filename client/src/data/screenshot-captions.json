@@ -1,0 +1,137 @@
+[
+  {
+    "projectId": "hr-attrition",
+    "projectTitle": "HR Attrition & Retention Dashboard",
+    "screenshots": [
+      {
+        "position": 1,
+        "filename": "hr-dashboard-01-overview-kpis.png",
+        "title": "Overview Page: Attrition KPIs & Department Breakdown",
+        "caption": "This overview page displays the primary KPIs calculated using DAX measures: Attrition Rate (15.1%) calculated as DIVIDE(Attrition Count, Total Employees), Retention Rate (84.9%) using the formula 1 - [Attrition Rate], and Active Employees. A stacked bar chart shows attrition by department using aggregated SQL data: SELECT Department, SUM(CASE WHEN Attrition='Yes' THEN 1 ELSE 0 END) as Leavers FROM Employees GROUP BY Department. The Sales department leads with 25% attrition, revealing the primary retention challenge. Interactive slicers allow drilling by JobRole and Tenure.",
+        "technicalDetails": "DAX: Attrition Rate % = DIVIDE([Total Leavers], [Total Employees]) | SQL: Aggregation with CASE WHEN logic for departmental breakdown | Power BI: Star schema connects Employee Fact table to Department and Date dimensions | Data: 15,000 employee records from SQL Server"
+      },
+      {
+        "position": 2,
+        "filename": "hr-dashboard-02-demographics-segments.png",
+        "title": "Demographics Page: Age Group & Tenure Segmentation Analysis",
+        "caption": "This page segments attrition by Age Group and Tenure using SQL CASE statements to bin data: CASE WHEN Age < 25 THEN 'Under 25' WHEN Age BETWEEN 25 AND 34 THEN '25-34'... END. A heat map reveals that 2-3 year tenure employees have the highest attrition rate (28%), indicating a critical career progression gap. DAX measure Avg Satisfaction Score = AVERAGE(Employees[SatisfactionScore]) is overlaid to show correlation between low satisfaction and attrition. Bubble chart shows employee count vs satisfaction by age group.",
+        "technicalDetails": "DAX: At-Risk Count = CALCULATE(COUNT(Employees), SatisfactionScore <=2, WorkLifeBalance <=2, Attrition='No') | SQL: Age binning using CASE statements | Visualization: Clustered column chart with DAX-calculated drill-through | Key Formula: YoY Attrition = [Current Rate] - CALCULATE([Attrition Rate], SAMEPERIODLASTYEAR(Date))"
+      },
+      {
+        "position": 3,
+        "filename": "hr-dashboard-03-drivers-correlation.png",
+        "title": "Drivers Page: Promotion Lag & Salary Analysis",
+        "caption": "This analytical page visualizes key attrition drivers through scatter plots. Left panel shows correlation between YearsSinceLastPromotion and attrition using SQL query: SELECT YearsSinceLastPromotion, SUM(CASE WHEN Attrition='Yes' THEN 1 END) as Leavers FROM Employees GROUP BY YearsSinceLastPromotion. Employees with >5 years since promotion show 35% attrition. Right panel displays Salary Hike vs Attrition using a DAX calculated column [Risk Score] that combines multiple factors. Employees with <10% salary hikes are 2x more likely to leave. Data-driven insights enable HR to prioritize intervention programs.",
+        "technicalDetails": "SQL: Multi-factor analysis combining promotion history and salary data with conditional counting | DAX: Risk Score = IF(PercentSalaryHike < 10, 2, IF(PercentSalaryHike < 15, 1, 0)) | Aggregation: Group By analysis combined with HAVING clauses for filtering | Visual: Trendline overlay showing strong negative correlation between salary action and attrition"
+      }
+    ]
+  },
+  {
+    "projectId": "netflix-analytics",
+    "projectTitle": "Netflix Viewing Behavior Analytics",
+    "screenshots": [
+      {
+        "position": 1,
+        "filename": "netflix-dashboard-01-viewing-patterns.png",
+        "title": "Viewing Patterns Page: Total Hours & Genre Performance",
+        "caption": "This page aggregates 5,000+ viewing sessions to identify consumption patterns. Top KPI shows Total Hours = SUM(WatchHistory[DurationMinutes]) / 60, revealing 125K hours watched. Genre comparison bar chart uses SQL aggregation: SELECT Genre, SUM(DurationMinutes) FROM WatchHistory GROUP BY Genre ORDER BY SUM(DurationMinutes) DESC. Crime (40,523 hrs) and Documentary (38,104 hrs) genres dominate. DAX measure Genre Share = DIVIDE([Genre Hours], CALCULATE([Total Hours], ALL(Content[Genre]))) shows Crime owns 32.4% of total watch time. Weekend vs Weekday slicer enables time-based analysis.",
+        "technicalDetails": "DAX: Total Hours = SUM(WatchHistory[DurationMinutes])/60 | Genre Share = DIVIDE([Hours], CALCULATE([Hours], ALL(Genre))) | SQL: Time series aggregation using SUM(DurationMinutes) grouped by Genre | Data Model: Bridges WatchHistory Fact table with Content Dimension on Title | Key Insight: Documentary spike on weekends (40%) vs weekdays (28%)"
+      },
+      {
+        "position": 2,
+        "filename": "netflix-dashboard-02-completion-rates.png",
+        "title": "Engagement Analysis: Completion Rate & Churn Risk Identification",
+        "caption": "Completion rate analysis reveals content stickiness using DAX measure: Avg Completion = AVERAGE(WatchHistory[PercentCompleted]). Crime genre achieves 85% completion (highest engagement), while Action films drop to 42% (viewers abandon after 30 mins). SQL query identifies high-risk content: SELECT Title, SUM(WatchedDuration)/SUM(TotalDuration)*100 as Completion_Rate FROM WatchStats GROUP BY Title HAVING [Rate] < 20. A churn risk segment uses DAX: Churn Risk = CALCULATE(COUNT(Users), DATEDIFF(TODAY(), Users[LastWatchDate]) > 30), flagging 8,234 inactive users. Drill-through enables win-back campaign targeting.",
+        "technicalDetails": "DAX: Avg Completion = AVERAGE(PercentCompleted) | Churn Risk = CALCULATE(COUNT(UserID), DaysSinceLastWatch > 30) | SQL: Window function analysis for drop-off patterns at content milestones | Segmentation: CASE WHEN PercentCompleted > 90 THEN 'Completed' WHEN > 50 THEN 'Partial'... | Aggregation: Cohort analysis grouping by ReleaseYear and Genre"
+      },
+      {
+        "position": 3,
+        "filename": "netflix-dashboard-03-user-segments.png",
+        "title": "User Segmentation: Binge-Watchers vs Casual Viewers",
+        "caption": "K-means clustering identifies three user segments based on viewing intensity. Binge-Watchers (24% of users) watch >3 hours/session using SQL query: SELECT UserID, COUNT(ShowID) as Episodes_Watched FROM WatchHistory GROUP BY UserID, Date HAVING COUNT(ShowID) > 5. They show 2x higher churn risk without personalized recommendations. Casual Viewers (61%) watch <1 hour/session with steady engagement. DAX measure Daily Active Users (DAU) = CALCULATE(COUNT(DISTINCT UserID), ALL(Calendar)) tracks cohort trends. Scatter plot shows Frequency (episodes watched) vs Recency (days since last watch), with color-coded segments enabling targeted intervention.",
+        "technicalDetails": "SQL: Binge session detection using HAVING COUNT(ShowID) > 5 | DAX: DAU = CALCULATE(COUNT(DISTINCT UserID), ALL(Date)) | Segmentation Algorithm: K-Means on features [TotalHours, SessionDuration, WeeklyFrequency] | Clustering: Identified 3 optimal clusters using silhouette analysis | Visualization: Bubble chart with size=Lifetime Value, color=Segment, position=[Frequency, Recency]"
+      }
+    ]
+  },
+  {
+    "projectId": "adidas-sales",
+    "projectTitle": "Adidas Shoe Sales Analysis",
+    "screenshots": [
+      {
+        "position": 1,
+        "filename": "adidas-analysis-01-sales-trends.png",
+        "title": "Monthly Sales Trends: Seasonal Pattern Discovery",
+        "caption": "Time series analysis reveals strong Q2 seasonality in women's footwear using Python aggregation: monthly_sales = df.groupby(df['InvoiceDate'].dt.to_period('M'))['TotalSales'].sum(). Line plot shows 35% spike in April-May driven by outdoor activity season. Python pandas resampling (df.resample('M').sum()) identifies consistent pattern across 2 years. The analysis used 100,000+ transaction records spanning 2 years. Trend line overlay (calculated with numpy polyfit) projects Q2 will generate 28% of annual revenue. Interactive drill-down reveals Women's Running category dominates with 42% of Q2 sales.",
+        "technicalDetails": "Python: df.groupby(df['InvoiceDate'].dt.to_period('M'))['TotalSales'].sum() | Seasonality: Time series decomposition using statsmodels to isolate trend, seasonal, residual components | Aggregation: Monthly sum of TotalSales with product category breakdown | Visualization: Line plot with confidence intervals | Statistical Method: LOESS smoothing to identify trend inflection points"
+      },
+      {
+        "position": 2,
+        "filename": "adidas-analysis-02-regional-performance.png",
+        "title": "Regional Profitability: Discount Elasticity by Geography",
+        "caption": "Heatmap analysis using Python correlation matrix (sns.heatmap(corr_matrix)) reveals regional discount sensitivity. Northeast region shows 20% higher responsiveness to discounts >15%, while Southeast is discount-inelastic (3% lift). Python aggregation by region: region_performance = df.groupby('Region')[['TotalSales','OperatingProfit']].sum() shows Online channel volume ($12.4M) vs. Direct channel margins (45% vs 30%). Scatter plot with region colors demonstrates profit vs volume trade-off: West leads in volume ($8.2M) but South achieves highest margin (32%). This drives hybrid channel strategy optimization.",
+        "technicalDetails": "Python: df.groupby('Region')[['TotalSales', 'OperatingProfit']].sum().sort_values() | Correlation Analysis: Pearson correlation between DiscountAmount and UnitsSold by Region | Feature Engineering: Created Margin % = OperatingProfit / TotalSales | Visualization: Bubble chart with size=Volume, color=Margin, position by Region | Elasticity Calc: % Change in Units / % Change in Discount"
+      },
+      {
+        "position": 3,
+        "filename": "adidas-analysis-03-product-performance.png",
+        "title": "Top Product Analysis: Category Mix & Margin Drivers",
+        "caption": "Bar chart identifies top 5 products by unit volume using Python: top_products = df.groupby('Product')['UnitsSold'].sum().nlargest(5), revealing Women's Running Shoes (287K units, $9.2M) dominates. However, margin analysis shows Premium Basketball line (44% margin, 85K units) drives profitability more efficiently. Python correlation analysis: corr = df[['TotalSales','UnitsSold','OperatingProfit']].corr() shows 0.91 correlation between units and revenue but only 0.64 with profit, indicating substantial margin variance. Box plot by product category reveals Running category has tight margin distribution (37-42%) while Basketball shows high variance (18-52%), requiring inventory tier strategy.",
+        "technicalDetails": "Python: top_products = df.groupby('Product')['UnitsSold'].sum().nlargest(5) | Margin Calculation: df['Margin'] = df['OperatingProfit'] / df['TotalSales'] * 100 | Statistical Summary: df.groupby('Product')['Margin'].describe() for quartile analysis | Visualization: Grouped bar chart (Volume + Margin by Product) + Box plot for distribution | Feature: Return Rate correlation showing inverse relationship with margin"
+      }
+    ]
+  },
+  {
+    "projectId": "course-engagement",
+    "projectTitle": "Online Course Engagement Dashboard",
+    "screenshots": [
+      {
+        "position": 1,
+        "filename": "course-dashboard-01-daily-active-users.png",
+        "title": "Daily Active Users (DAU) & Engagement Funnel",
+        "caption": "PostgreSQL aggregation tracks student engagement trends using: SELECT login_date, COUNT(DISTINCT student_id) as dau FROM activity_logs GROUP BY login_date. DAU peaks at 412 students on Day 1, declining to 156 by Week 4 (60% drop-off). Excel Power Query connects to PostgreSQL via ODBC to pull live data. Dashboard trend line reveals engagement cliff at Week 4 module transition. SQL query identifies at-risk students: SELECT s.student_id FROM students s JOIN activity_logs a GROUP BY s.student_id HAVING MAX(a.login_date) < CURRENT_DATE - INTERVAL '7 days'. Automated email triggers fire for inactivity >5 days, capturing 73 students before churn.",
+        "technicalDetails": "PostgreSQL: SELECT login_date, COUNT(DISTINCT student_id) as dau FROM activity_logs GROUP BY login_date | ETL: Power Query refresh schedule (hourly) pulls PostgreSQL data into Excel | Excel Formula: DAU YoY Change = (Current DAU - Previous Year DAU) / Previous Year DAU | Pivot Table: Activity by Module (Module1-7) with Day-of-Course dimension | Visualization: Stacked area chart showing DAU trend with Week 4 annotation"
+      },
+      {
+        "position": 2,
+        "filename": "course-dashboard-02-quiz-performance.png",
+        "title": "Quiz Performance & Module Difficulty Analysis",
+        "caption": "Module difficulty identified using PostgreSQL aggregation: SELECT module_name, AVG(score) as avg_score FROM quiz_scores GROUP BY module_name ORDER BY avg_score ASC. Module 3 (Algorithms) has lowest avg score (58%), highest retry rate (3.2 attempts/student). Excel pivot table breaks down Pass Rate (>60%) by module: Module 1 (94%), Module 3 (68%), Module 7 (45%). SQL HAVING clause identifies struggling cohorts: SELECT module_name, COUNT(*) FROM quiz_scores WHERE score < 60 GROUP BY module_name HAVING COUNT(*) > 15. This triggers curriculum review for Modules 3 & 7. Correlation analysis shows forum participation increases pass rate by 30%.",
+        "technicalDetails": "PostgreSQL: SELECT module_name, AVG(score), COUNT(*) as attempts FROM quiz_scores GROUP BY module_name HAVING COUNT(*) > 50 | Excel Metric: Pass Rate = COUNT(scores > 60) / COUNT(*) | Window Function (SQL): ROW_NUMBER() OVER (PARTITION BY module ORDER BY score DESC) for per-module ranking | Pivot Analysis: Cross-tabulation of Module x Score Range showing distribution | Trend: Time-series of Pass Rate by enrollment cohort"
+      },
+      {
+        "position": 3,
+        "filename": "course-dashboard-03-completion-forecast.png",
+        "title": "Course Completion Rate & Churn Risk Prediction",
+        "caption": "PostgreSQL calculates completion rate using: SELECT (COUNT(CASE WHEN status='Completed' THEN 1 END)*100.0 / COUNT(*)) as Completion_Rate FROM enrollments. Current completion stands at 62% (310 of 500 students). Video drop-off analysis reveals 40% abandonment at 10-minute mark for videos >15 mins. SQL subquery identifies video-completion correlation: SELECT student_id, COUNT(*) FROM activity_logs WHERE activity_type='video_watch' GROUP BY student_id HAVING COUNT(*) > 8 are 2.1x more likely to complete course. Excel Power Query creates completion forecast: IF(DaysActive > 20 AND QuizAvgScore > 65 AND VideoCompletion > 75%, 'High', 'Low'). Predictive model flags 47 high-risk students for intervention.",
+        "technicalDetails": "PostgreSQL: SELECT status, COUNT(*) FROM enrollments GROUP BY status for completion breakdown | Churn Detection: SQL query identifying inactive students for >10 days: WHERE last_activity < CURRENT_DATE - INTERVAL '10 days' | Excel Formula: Risk Score = IF(AND(DaysInactive>7, QuizScore<60, ForumPosts<2), 'High Risk', 'Standard') | Cohort Analysis: Retention rate by enrollment_date using window functions | Predictive Features: DaysActive, AvgQuizScore, VideoCompletion%, ForumParticipation"
+      }
+    ]
+  },
+  {
+    "projectId": "ecommerce-segmentation",
+    "projectTitle": "E-commerce Customer Segmentation",
+    "screenshots": [
+      {
+        "position": 1,
+        "filename": "ecommerce-segment-01-rfm-scores.png",
+        "title": "RFM Scoring: Recency, Frequency, Monetary Dimensions",
+        "caption": "SQL window functions assign RFM scores (1-5 scale) using: NTILE(5) OVER (ORDER BY last_order_date) as r_score. Recency histogram shows 35% of 50,000 customers purchased in last 30 days (R-score 5), while 18% haven't bought in 120+ days (R-score 1). Frequency distribution reveals 42% are one-time buyers (F-score 1), creating massive opportunity. Monetary value NTILE identifies top 20% customers contributing 60% revenue ($8.4M of $14M). Scatter plot overlays RFM dimensions: bubble size = monetary value, color = recency, X-axis = frequency. This visualization clearly shows concentrated value opportunity.",
+        "technicalDetails": "SQL: WITH rfm_base AS (SELECT customer_id, MAX(order_date) as recency, COUNT(*) as frequency, SUM(amount) as monetary FROM orders GROUP BY customer_id) SELECT *, NTILE(5) OVER (ORDER BY recency) as r_score, NTILE(5) OVER (ORDER BY frequency) as f_score, NTILE(5) OVER (ORDER BY monetary) as m_score FROM rfm_base | Calculation: Recency = TODAY() - last_order_date | Visualization: Histogram of RFM distributions with quartile lines | Statistical: 25th, 50th, 75th percentiles highlighted for threshold definition"
+      },
+      {
+        "position": 2,
+        "filename": "ecommerce-segment-02-segment-profiling.png",
+        "title": "Customer Segmentation: Champions vs At-Risk Cohorts",
+        "caption": "SQL CASE statement categorizes customers: CASE WHEN r_score>=4 AND f_score>=4 THEN 'Champion' WHEN r_score<=2 AND f_score>=4 THEN 'At Risk'... END. Champions (n=4,200, 8.4%): High value ($1,920 avg), high frequency (12.3 orders), recent activity. These 4,200 customers generate $8.1M revenue (57.8%). At Risk (n=3,100, 6.2%): High historical value ($1,450 avg) but inactive >90 days. Win-back campaign targets this segment with personalized 15-20% discount. Loyal (n=12,400, 24.8%): Steady spenders ($680 avg), moderate frequency. Hibernating (n=30,300, 60.6%): Low-value, one-time buyers. Segment distribution heatmap enables targeted marketing spend allocation.",
+        "technicalDetails": "SQL: SELECT Customer_Segment, COUNT(*) as Count, AVG(monetary) as Avg_Spend, AVG(frequency) as Avg_Freq FROM (CASE WHEN... END segments) GROUP BY Customer_Segment | Segment Threshold Logic: R-score + F-score combinations (e.g., 4+4=Champion, 2- + 4+=AtRisk) | Metrics: Average Lifetime Value by segment using SUM(amount) / COUNT(DISTINCT customer_id) | Visualization: Clustered bar chart (Segment Count + Avg Value) | Win-back Priority: Rank At-Risk by historical value (SUM(amount)) for campaign budget allocation"
+      },
+      {
+        "position": 3,
+        "filename": "ecommerce-segment-03-ltv-forecast.png",
+        "title": "Customer Lifetime Value (CLTV) Projection & Campaign ROI",
+        "caption": "SQL calculates current CLTV: SELECT customer_id, SUM(amount) as CLTV FROM orders GROUP BY customer_id. Average CLTV varies dramatically: Champions ($1,920), Loyal ($680), At-Risk ($1,450 historical). Forecasting model estimates 12-month forward CLTV by segment using Python K-Means clustering features [purchase_frequency, avg_order_value, days_since_last_purchase]. Win-back campaign assumes: Champions need 1:1 retention (lift forecasted at 2%), At-Risk need aggressive discount (projected 12% conversion back). ROI projection shows At-Risk segment delivers best ROIC: $245K campaign cost × 12% conversion = 3,720 reactivated customers × $1,100 projected annual value = $4.09M incremental revenue (16.7x ROI).",
+        "technicalDetails": "SQL CLTV: SELECT customer_id, SUM(amount) as CLTV, COUNT(*) as order_count, AVG(amount) as avg_order FROM orders GROUP BY customer_id | Forecast Model: Linear regression [CLTV_future] = a*frequency + b*recency + c*monetary_value | Cohort Retention: Segment-specific retention curves using historical churn rates | Campaign Allocation: Budget = segment_size × customer_value × target_conversion_rate | ROI Calc: (Revenue_Impact - Campaign_Cost) / Campaign_Cost × 100 | Visualization: Waterfall chart showing baseline CLTV → campaign impact → forecast CLTV"
+      }
+    ]
+  }
+]
