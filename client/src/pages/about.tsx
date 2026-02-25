@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import GitHubRepos from "@/components/github-repos";
 import ContactCTA from "@/components/contact-cta";
-
+import ReactGA from "react-ga4";
 //
 // ================= Animated Counter ==================
 //
@@ -112,29 +112,34 @@ export default function About() {
   //
   // =============== Download handlers ===============
   //
-  const downloadResume = (variant: "global" | "uae") => {
-    console.log("[Analytics] Resume Download Requested", {
-      variant,
-      timestamp: new Date().toISOString(),
-    });
 
-    toast({
-      title: "Preparing download...",
-      description:
-        variant === "global"
-          ? "Opening Global (ATS-friendly) resume."
-          : "Opening UAE resume (with photo).",
-    });
+const downloadResume = (variant: "global" | "uae") => {
+  // 1. ANALYTICS: Send the event to Google before opening the file
+  ReactGA.event({
+    category: "Resume",
+    action: "Download",
+    label: variant === "global" ? "Global_ATS" : "UAE_Local",
+  });
 
-    const path = variant === "global" ? "/resume-global.pdf" : "/resume-uae.pdf";
-    window.open(path, "_blank");
-  };
+  // 2. LOGGING & UI
+  console.log(`[Analytics] Tracked ${variant} download`);
+  toast({
+    title: "Preparing download...",
+    description: variant === "global" 
+      ? "Opening Global (ATS-friendly) resume." 
+      : "Opening UAE resume (with photo).",
+  });
 
-  const downloadAndClose = (variant: "global" | "uae", e: React.MouseEvent<HTMLButtonElement>) => {
-    downloadResume(variant);
-    const details = e.currentTarget.closest("details") as HTMLDetailsElement | null;
-    if (details) details.removeAttribute("open");
-  };
+  // 3. EXECUTION
+  const path = variant === "global" ? "/resume-global.pdf" : "/resume-uae.pdf";
+  window.open(path, "_blank");
+};
+
+const downloadAndClose = (variant: "global" | "uae", e: React.MouseEvent<HTMLButtonElement>) => {
+  downloadResume(variant);
+  const details = e.currentTarget.closest("details") as HTMLDetailsElement | null;
+  if (details) details.removeAttribute("open");
+};
 
   //
   // ================================================================
