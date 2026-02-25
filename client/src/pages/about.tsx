@@ -10,7 +10,12 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import GitHubRepos from "@/components/github-repos";
 import ContactCTA from "@/components/contact-cta";
-import ReactGA from "react-ga4";
+
+declare global {
+  interface Window {
+    dataLayer: Array<Record<string, unknown>>;
+  }
+}
 //
 // ================= Animated Counter ==================
 //
@@ -115,14 +120,14 @@ export default function About() {
 
 const downloadResume = (variant: "global" | "uae") => {
   // 1. ANALYTICS: Send the event to Google before opening the file
-  ReactGA.event({
-    category: "Resume",
-    action: "Download",
-    label: variant === "global" ? "Global_ATS" : "UAE_Local",
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: "resume_click", // This is the trigger name you'll use in GTM
+    resume_variant: variant === "global" ? "Global_ATS" : "UAE_Local",
   });
 
   // 2. LOGGING & UI
-  console.log(`[Analytics] Tracked ${variant} download`);
+  console.log(`[GTM] Pushed ${variant} to DataLayer`);
   toast({
     title: "Preparing download...",
     description: variant === "global" 
