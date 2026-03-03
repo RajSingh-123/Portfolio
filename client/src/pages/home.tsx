@@ -83,8 +83,7 @@ export default function Home() {
             
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
               Hi, I'm <span className="font-semibold text-foreground">{personalInfo.name}</span>. 
-              A {personalInfo.role} specializing in building interactive dashboards, 
-              automating ETL workflows, and uncovering actionable insights.
+              I transform fragmented market data into high-conviction capital allocation engines. Specializing in Dubai Real Estate intelligence, I bridge the gap between raw DLD transactional data and institutional-grade exit strategies. My focus isn't just visualizing data—it's engineering liquidity signals that drive ROI.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
