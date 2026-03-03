@@ -5,7 +5,7 @@ import eduThumb from "@assets/generated_images/education_dashboard_thumbnail.png
 import rajProfile from "@assets/raj_1764164788299.png";
 
 export const personalInfo = {
-  name: "Raj Singh",
+  name: "Raj Singh Thakuri",
   role: "Data Analyst",
   avatar: rajProfile,
   email: "rajsingh3706@gmail.com",
