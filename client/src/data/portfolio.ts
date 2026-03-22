@@ -5,12 +5,12 @@ import eduThumb from "@assets/generated_images/education_dashboard_thumbnail.png
 import rajProfile from "@assets/raj_1764164788299.png";
 
 export const personalInfo = {
-  name: "Raj Singh Thakuri",
+  name: "Raj Singh",
   role: "Data Analyst",
   avatar: rajProfile,
   email: "rajsingh3706@gmail.com",
   phone: "(+91) 81318 01039",
-  location: "Guwahati, Assam, India",
+  location: "Noida, U.P, India",
   relocation: "Open to relocation",
   linkedin: "linkedin.com/in/raj-singh-15v",
   github: "github.com/RajSingh-123",
